@@ -2,7 +2,7 @@
     <application
         android:label="UTNFRC"
         android:name="${applicationName}"
-        android:icon="@mipmap/utn_icn">
+        android:icon="@mipmap/icon_utn">
         <activity
             android:name=".MainActivity"
             android:exported="true"

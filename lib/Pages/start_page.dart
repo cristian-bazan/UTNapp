@@ -20,7 +20,7 @@ class _StartPageState extends State<StartPage> {
     FocusScopeNode f = FocusScope.of(context);
 
     return StatefulBuilder(
-      builder: (context, StartPageState){
+      builder: (context, startPageState){
       return GestureDetector(
         onTap: () {    
           if (!f.hasPrimaryFocus) {
