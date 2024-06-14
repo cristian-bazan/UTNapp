@@ -45,17 +45,16 @@ class _StartPageState extends State<StartPage> {
                       ),
                 ),
                 Column(children: [
-                  MyFormWidget(formKey: _formKeyUser, label: 'Usuario', keyboardType: TextInputType.number),
+                  MyFormWidget(formKey: _formKeyUser, label: 'Usuario', keyboardType: TextInputType.number, save: isSave,),
                   const SizedBox(height: 8),
-                  MyFormWidget(formKey: _formKeyPassword, label: 'Contraseña', keyboardType: TextInputType.text),
+                  MyFormWidget(formKey: _formKeyPassword, label: 'Contraseña', keyboardType: TextInputType.text, save: isSave,),
                   const SizedBox(height: 8),
                   CheckboxListTile(
                     title: const Text("Recordar"),
                     value: isSave, 
                     onChanged: (bool? value){
-                      setState(() {
                         isSave = value!;
-                      });
+                      setState(() {});
                     }),
                   const SizedBox(height: 8),
                   const MyDropdownMenu(),

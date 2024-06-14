@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:utnfrc_mobile/Pages/pages.dart';
 import 'package:utnfrc_mobile/Providers/utn_provider.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SharedPreferences.getInstance();
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider<UtnProvider>(create: (_) => UtnProvider())

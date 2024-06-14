@@ -16,47 +16,61 @@ class MyFormWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String password = Preferences().getPassword() as String;
-    String user = Preferences().getUser() as String;
 
-    return Form(
-      key: _formKey,
-      child: 
-    Column(children: [
-          TextFormField(
-            keyboardType: keyboardType,
-            initialValue: _label=='Contraseña' ? password : user,
-            obscureText: _label=='Contraseña' ? true : false,
-            onSaved: (value){
-              if (_label == 'Usuario') {
-                  context.read<UtnProvider>().setUser(value!);
-                  if (_save) {
-                    Preferences().setUser(value);
+    String user = '';
+    String password= '';
+
+    Preferences().getUser().then((result) {
+      user = result.toString();
+    });
+
+    Preferences().getPassword().then((result) {
+      password = result.toString();
+    });
+    //String password = Preferences().getPassword as String;
+
+    return FutureBuilder(
+      future: Preferences().getUser(),
+      builder: (context, snapshot) {
+      return  Form(
+        key: _formKey,
+        child: 
+      Column(children: [
+            TextFormField(
+              keyboardType: keyboardType,
+              initialValue: _label=='Contraseña' ? password : user,
+              obscureText: _label=='Contraseña' ? true : false,
+              onSaved: (value){
+                if (_label == 'Usuario') {
+                    context.read<UtnProvider>().setUser(value!);
+                    if (_save) {
+                      Preferences().setUser(value);
+                    }
+                  }else{
+                    context.read<UtnProvider>().setPassword(value!);
+                    if (_save) {
+                      Preferences() .setPassword(value);
+                    }
                   }
-                }else{
-                  context.read<UtnProvider>().setPassword(value!);
-                  if (_save) {
-                    Preferences() .setPassword(value);
-                  }
+              },
+              validator: (value){
+                if (value == null || value.isEmpty) {
+                  return 'Complete todos los campos';
                 }
-            },
-            validator: (value){
-              if (value == null || value.isEmpty) {
-                return 'Complete todos los campos';
-              }
-              return null;
-            },
-            decoration: InputDecoration(
-              labelText: _label,
-              icon: IconButton(
-                onPressed: (){
-                  _formKey.currentState!.reset();
-                },
-                icon: const Icon(Icons.close))
-            ),
-          )
-        ],
-      )
-      );
+                return null;
+              },
+              decoration: InputDecoration(
+                labelText: _label,
+                icon: IconButton(
+                  onPressed: (){
+                    _formKey.currentState!.reset();
+                  },
+                  icon: const Icon(Icons.close))
+              ),
+            )
+          ],
+        )
+        );
+  });
   }
 }
