@@ -66,6 +66,7 @@ class _UtnPageState extends State<UtnPage> {
     
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const MyTitleAppBar(title: 'UTNFRC',),
         actions: <Widget>[
           NavigationControls(webViewController: _controller),

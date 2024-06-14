@@ -20,7 +20,7 @@ class MyElevatedButton extends StatelessWidget {
                         context.read<UtnProvider>().setSelection(selection);
                         formKeyUser.currentState!.save();
                         formKeyPassword.currentState!.save();
-                        Navigator.popAndPushNamed(context, '/page');
+                        Navigator.pushNamed(context, '/page');
                       }
       }, 
       child: Text('Ingresar $sesion')
