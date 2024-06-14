@@ -61,7 +61,7 @@ class MyFormWidget extends StatelessWidget {
               },
               decoration: InputDecoration(
                 labelText: _label,
-                icon: IconButton(
+                suffixIcon: IconButton(
                   onPressed: (){
                     _formKey.currentState!.reset();
                   },
