@@ -25,7 +25,9 @@ class NavigationControls extends StatelessWidget {
             WebViewCookieManager().setCookie(const WebViewCookie(name: "tipoUsuario", value: "", domain: "www.frc.utn.edu.ar"));
             WebViewCookieManager().setCookie(const WebViewCookie(name: "rec", value: "0", domain: "www.frc.utn.edu.ar"));
             WebViewCookieManager().setCookie(const WebViewCookie(name: "pag", value: "2", domain: ".frc.utn.edu.ar"));*/
-            Navigator.popAndPushNamed(context, '/');
+
+            //Navigator.popAndPushNamed(context, '/');
+            Navigator.pop(context);
           }, 
           icon: const Column(
             children: [
