@@ -13,6 +13,8 @@ class _StartPageState extends State<StartPage> {
   final _formKeyUser = GlobalKey<FormState>();
   final _formKeyPassword = GlobalKey<FormState>();
   bool isSave = false;
+  final userController = TextEditingController();
+  final passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -47,9 +49,9 @@ class _StartPageState extends State<StartPage> {
                         ),
                   ),
                   Column(children: [
-                    MyFormWidget(formKey: _formKeyUser, label: 'Usuario', keyboardType: TextInputType.number, save: isSave,),
+                    MyFormWidget(formKey: _formKeyUser, label: 'Usuario', keyboardType: TextInputType.number, save: isSave, controller: userController,),
                     const SizedBox(height: 8),
-                    MyFormWidget(formKey: _formKeyPassword, label: 'Contraseña', keyboardType: TextInputType.text, save: isSave,),
+                    MyFormWidget(formKey: _formKeyPassword, label: 'Contraseña', keyboardType: TextInputType.text, save: isSave, controller: passwordController,),
                     const SizedBox(height: 8),
                     CheckboxListTile(
                       title: const Text("Recordar"),

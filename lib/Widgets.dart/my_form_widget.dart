@@ -3,53 +3,56 @@ import 'package:provider/provider.dart';
 import 'package:utnfrc_mobile/Providers/utn_provider.dart';
 import 'package:utnfrc_mobile/Shared_Preferences/preferences.dart';
 
-class MyFormWidget extends StatelessWidget {
+class MyFormWidget extends StatefulWidget {
   const MyFormWidget({
     super.key,
-    required GlobalKey<FormState> formKey, required String label, required this.keyboardType, required bool save
-  }) : _formKey = formKey, _label = label, _save = save;
+    required GlobalKey<FormState> formKey, required String label, required this.keyboardType, required bool save, required TextEditingController controller,
+  }) : _formKey = formKey, _label = label, _save = save, _controller = controller;
 
   final GlobalKey<FormState> _formKey;
   final String? _label;
   final TextInputType keyboardType;
   final bool _save;
+  final TextEditingController _controller;
 
+  @override
+  State<MyFormWidget> createState() => _MyFormWidgetState();
+}
+
+class _MyFormWidgetState extends State<MyFormWidget> {
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget._label == 'Usuario') {
+      widget._controller.text = Preferences.user;
+    } else {
+      widget._controller.text = Preferences.password;
+    }
+  }
+  
   @override
   Widget build(BuildContext context) {
 
-    String user = '';
-    String password= '';
-
-    Preferences().getUser().then((result) {
-      user = result.toString();
-    });
-
-    Preferences().getPassword().then((result) {
-      password = result.toString();
-    });
-    //String password = Preferences().getPassword as String;
-
-    return FutureBuilder(
-      future: Preferences().getUser(),
-      builder: (context, snapshot) {
       return  Form(
-        key: _formKey,
+        key: widget._formKey,
         child: 
       Column(children: [
             TextFormField(
-              keyboardType: keyboardType,
-              initialValue: _label=='Contraseña' ? password : user,
-              obscureText: _label=='Contraseña' ? true : false,
+              controller: widget._controller,
+              keyboardType: widget.keyboardType,
+              obscureText: widget._label=='Contraseña' ? true : false,
               onSaved: (value){
-                if (_label == 'Usuario') {
+                if (widget._label == 'Usuario') {
                     context.read<UtnProvider>().setUser(value!);
-                    if (_save) {
-                      Preferences().setUser(value);
+                    if (widget._save) {
+                      Preferences.setUser(value);
                     }
                   }else{
                     context.read<UtnProvider>().setPassword(value!);
-                    if (_save) {
-                      Preferences() .setPassword(value);
+                    if (widget._save) {
+                      Preferences.setPassword(value);
+
                     }
                   }
               },
@@ -60,10 +63,23 @@ class MyFormWidget extends StatelessWidget {
                 return null;
               },
               decoration: InputDecoration(
-                labelText: _label,
+                labelText: widget._label,
                 suffixIcon: IconButton(
                   onPressed: (){
-                    _formKey.currentState!.reset();
+                    if (widget._label == 'Usuario') {
+                      if (widget._controller.text != "") {
+                        widget._controller.text = "";
+                      } else {
+                        widget._controller.text = Preferences.user;
+                      }
+                    } else {
+                      if (widget._controller.text != "") {
+                        widget._controller.text = "";
+                      } else {
+                        widget._controller.text = Preferences.password;
+                      }
+                    }
+                    setState(() {});
                   },
                   icon: const Icon(Icons.close))
               ),
@@ -71,6 +87,5 @@ class MyFormWidget extends StatelessWidget {
           ],
         )
         );
-  });
   }
 }

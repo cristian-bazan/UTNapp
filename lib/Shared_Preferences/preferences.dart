@@ -1,56 +1,54 @@
-
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:utnfrc_mobile/Shared_Preferences/encoder.dart';
 
 class Preferences {
-
-  late Encoder _encoder;
-
-  Preferences(){
-    _encoder = Encoder();
-  }
+  static late SharedPreferences _prefs;
+  static String user = "";
+  static String password = "";
+  static final Encoder _encoder = Encoder();
 
   // *********** GETS ************
 
-  Future<String> getUser() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String>? userList = prefs.getStringList('user');
-
-    if (userList==null || userList.isEmpty) {
-      return '';
-    } else {
-      String user = _encoder.decode(userList);
-      return user;
-    }
-    
+  static Future getPrefs() async {
+    _prefs = await SharedPreferences.getInstance();
   }
 
-  Future<String> getPassword() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String>? passwordList= prefs.getStringList('password');
+  static void getUser() async {
+    String value = "";
+    
+    List<String>? userList = _prefs.getStringList('user');
+
+    if (userList==null || userList.isEmpty) {
+    } else {
+      value = _encoder.decode(userList);
+    }
+    user = value;
+  }
+
+  static void getPassword() async {
+    String value = "";
+    List<String>? passwordList = _prefs.getStringList('password');
 
     if (passwordList==null || passwordList.isEmpty) {
-      return '';
     } else {
-      String password = _encoder.decode(passwordList);
-      return password;
+      value = _encoder.decode(passwordList);
     }
-
+    password = value;
   }
 
   // *********** SETS ************
 
 
-  Future<void> setUser(String user) async {
+  static void setUser(String user) async {
     List<String>? userList =_encoder.encode(user);
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setStringList('user', userList);
+    _prefs.setStringList('user', userList);
+    getUser();
   }
 
-  Future<void> setPassword(String password) async {
+  static void setPassword(String password) async {
      List<String>? passwordList =_encoder.encode(password);
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setStringList('password', passwordList);
+    _prefs.setStringList('password', passwordList);
+    getPassword();
   }
 
 }
